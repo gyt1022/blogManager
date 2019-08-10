@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.guo.mapper.BlogFileMapper" >
+  <resultMap id="BaseResultMap" type="com.guo.entity.BlogFile" >
+    <id column="file_id" property="fileId" jdbcType="VARCHAR" />
+    <result column="filetype_id" property="filetypeId" jdbcType="VARCHAR" />
+    <result column="blog_id" property="blogId" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.guo.entity.BlogFileWithBLOBs" extends="BaseResultMap" >
+    <result column="file_name" property="fileName" jdbcType="LONGVARCHAR" />
+    <result column="file_date" property="fileDate" jdbcType="LONGVARCHAR" />
+    <result column="file_address" property="fileAddress" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    file_id, filetype_id, blog_id
+  </sql>
+  <sql id="Blob_Column_List" >
+    file_name, file_date, file_address
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.guo.entity.BlogFileExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from blog_file
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.guo.entity.BlogFileExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from blog_file
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from blog_file
+    where file_id = #{fileId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from blog_file
+    where file_id = #{fileId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.guo.entity.BlogFileExample" >
+    delete from blog_file
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.guo.entity.BlogFileWithBLOBs" >
+    insert into blog_file (file_id, filetype_id, blog_id, 
+      file_name, file_date, file_address
+      )
+    values (#{fileId,jdbcType=VARCHAR}, #{filetypeId,jdbcType=VARCHAR}, #{blogId,jdbcType=VARCHAR}, 
+      #{fileName,jdbcType=LONGVARCHAR}, #{fileDate,jdbcType=LONGVARCHAR}, #{fileAddress,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.guo.entity.BlogFileWithBLOBs" >
+    insert into blog_file
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="fileId != null" >
+        file_id,
+      </if>
+      <if test="filetypeId != null" >
+        filetype_id,
+      </if>
+      <if test="blogId != null" >
+        blog_id,
+      </if>
+      <if test="fileName != null" >
+        file_name,
+      </if>
+      <if test="fileDate != null" >
+        file_date,
+      </if>
+      <if test="fileAddress != null" >
+        file_address,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="fileId != null" >
+        #{fileId,jdbcType=VARCHAR},
+      </if>
+      <if test="filetypeId != null" >
+        #{filetypeId,jdbcType=VARCHAR},
+      </if>
+      <if test="blogId != null" >
+        #{blogId,jdbcType=VARCHAR},
+      </if>
+      <if test="fileName != null" >
+        #{fileName,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="fileDate != null" >
+        #{fileDate,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="fileAddress != null" >
+        #{fileAddress,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.guo.entity.BlogFileExample" resultType="java.lang.Integer" >
+    select count(*) from blog_file
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update blog_file
+    <set >
+      <if test="record.fileId != null" >
+        file_id = #{record.fileId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.filetypeId != null" >
+        filetype_id = #{record.filetypeId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.blogId != null" >
+        blog_id = #{record.blogId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fileName != null" >
+        file_name = #{record.fileName,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.fileDate != null" >
+        file_date = #{record.fileDate,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.fileAddress != null" >
+        file_address = #{record.fileAddress,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update blog_file
+    set file_id = #{record.fileId,jdbcType=VARCHAR},
+      filetype_id = #{record.filetypeId,jdbcType=VARCHAR},
+      blog_id = #{record.blogId,jdbcType=VARCHAR},
+      file_name = #{record.fileName,jdbcType=LONGVARCHAR},
+      file_date = #{record.fileDate,jdbcType=LONGVARCHAR},
+      file_address = #{record.fileAddress,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update blog_file
+    set file_id = #{record.fileId,jdbcType=VARCHAR},
+      filetype_id = #{record.filetypeId,jdbcType=VARCHAR},
+      blog_id = #{record.blogId,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.guo.entity.BlogFileWithBLOBs" >
+    update blog_file
+    <set >
+      <if test="filetypeId != null" >
+        filetype_id = #{filetypeId,jdbcType=VARCHAR},
+      </if>
+      <if test="blogId != null" >
+        blog_id = #{blogId,jdbcType=VARCHAR},
+      </if>
+      <if test="fileName != null" >
+        file_name = #{fileName,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="fileDate != null" >
+        file_date = #{fileDate,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="fileAddress != null" >
+        file_address = #{fileAddress,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where file_id = #{fileId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.guo.entity.BlogFileWithBLOBs" >
+    update blog_file
+    set filetype_id = #{filetypeId,jdbcType=VARCHAR},
+      blog_id = #{blogId,jdbcType=VARCHAR},
+      file_name = #{fileName,jdbcType=LONGVARCHAR},
+      file_date = #{fileDate,jdbcType=LONGVARCHAR},
+      file_address = #{fileAddress,jdbcType=LONGVARCHAR}
+    where file_id = #{fileId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.guo.entity.BlogFile" >
+    update blog_file
+    set filetype_id = #{filetypeId,jdbcType=VARCHAR},
+      blog_id = #{blogId,jdbcType=VARCHAR}
+    where file_id = #{fileId,jdbcType=VARCHAR}
+  </update>
+</mapper>

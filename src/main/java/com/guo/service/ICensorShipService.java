@@ -1,0 +1,1 @@
+package com.guo.service;import com.guo.entity.BlogCensorshipExample;import com.guo.entity.BlogCensorshipWithBLOBs;import java.util.List;/** * @author guoyutao * @date 2019/04/09 */public interface ICensorShipService {    List<BlogCensorshipWithBLOBs> queryAll(BlogCensorshipExample example);}

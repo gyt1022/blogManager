@@ -1,0 +1,1 @@
+package com.guo.service;import com.guo.entity.BlogFileExample;import com.guo.entity.BlogFileWithBLOBs;import java.util.List;/** * @author guoyutao * @date 2019/04/08 */public interface IFileService {    List<BlogFileWithBLOBs> findFileListByBlogId(BlogFileExample fileExample);    void AddFile(BlogFileWithBLOBs fileWithBLOBs);}

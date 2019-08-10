@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.guo.mapper.BlogCensorshipMapper" >
+  <resultMap id="BaseResultMap" type="com.guo.entity.BlogCensorship" >
+    <id column="censorship_id" property="censorshipId" jdbcType="VARCHAR" />
+    <result column="blog_id" property="blogId" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="bloguser_id" property="bloguserId" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.guo.entity.BlogCensorshipWithBLOBs" extends="BaseResultMap" >
+    <result column="censorship_date" property="censorshipDate" jdbcType="LONGVARCHAR" />
+    <result column="censorship_result" property="censorshipResult" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    censorship_id, blog_id, user_id, bloguser_id
+  </sql>
+  <sql id="Blob_Column_List" >
+    censorship_date, censorship_result
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.guo.entity.BlogCensorshipExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from blog_censorship
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.guo.entity.BlogCensorshipExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from blog_censorship
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from blog_censorship
+    where censorship_id = #{censorshipId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from blog_censorship
+    where censorship_id = #{censorshipId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.guo.entity.BlogCensorshipExample" >
+    delete from blog_censorship
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.guo.entity.BlogCensorshipWithBLOBs" >
+    insert into blog_censorship (censorship_id, blog_id, user_id, 
+      bloguser_id, censorship_date, censorship_result
+      )
+    values (#{censorshipId,jdbcType=VARCHAR}, #{blogId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, 
+      #{bloguserId,jdbcType=VARCHAR}, #{censorshipDate,jdbcType=LONGVARCHAR}, #{censorshipResult,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.guo.entity.BlogCensorshipWithBLOBs" >
+    insert into blog_censorship
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="censorshipId != null" >
+        censorship_id,
+      </if>
+      <if test="blogId != null" >
+        blog_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="bloguserId != null" >
+        bloguser_id,
+      </if>
+      <if test="censorshipDate != null" >
+        censorship_date,
+      </if>
+      <if test="censorshipResult != null" >
+        censorship_result,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="censorshipId != null" >
+        #{censorshipId,jdbcType=VARCHAR},
+      </if>
+      <if test="blogId != null" >
+        #{blogId,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="bloguserId != null" >
+        #{bloguserId,jdbcType=VARCHAR},
+      </if>
+      <if test="censorshipDate != null" >
+        #{censorshipDate,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="censorshipResult != null" >
+        #{censorshipResult,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.guo.entity.BlogCensorshipExample" resultType="java.lang.Integer" >
+    select count(*) from blog_censorship
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update blog_censorship
+    <set >
+      <if test="record.censorshipId != null" >
+        censorship_id = #{record.censorshipId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.blogId != null" >
+        blog_id = #{record.blogId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userId != null" >
+        user_id = #{record.userId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bloguserId != null" >
+        bloguser_id = #{record.bloguserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.censorshipDate != null" >
+        censorship_date = #{record.censorshipDate,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.censorshipResult != null" >
+        censorship_result = #{record.censorshipResult,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update blog_censorship
+    set censorship_id = #{record.censorshipId,jdbcType=VARCHAR},
+      blog_id = #{record.blogId,jdbcType=VARCHAR},
+      user_id = #{record.userId,jdbcType=VARCHAR},
+      bloguser_id = #{record.bloguserId,jdbcType=VARCHAR},
+      censorship_date = #{record.censorshipDate,jdbcType=LONGVARCHAR},
+      censorship_result = #{record.censorshipResult,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update blog_censorship
+    set censorship_id = #{record.censorshipId,jdbcType=VARCHAR},
+      blog_id = #{record.blogId,jdbcType=VARCHAR},
+      user_id = #{record.userId,jdbcType=VARCHAR},
+      bloguser_id = #{record.bloguserId,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.guo.entity.BlogCensorshipWithBLOBs" >
+    update blog_censorship
+    <set >
+      <if test="blogId != null" >
+        blog_id = #{blogId,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="bloguserId != null" >
+        bloguser_id = #{bloguserId,jdbcType=VARCHAR},
+      </if>
+      <if test="censorshipDate != null" >
+        censorship_date = #{censorshipDate,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="censorshipResult != null" >
+        censorship_result = #{censorshipResult,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where censorship_id = #{censorshipId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.guo.entity.BlogCensorshipWithBLOBs" >
+    update blog_censorship
+    set blog_id = #{blogId,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=VARCHAR},
+      bloguser_id = #{bloguserId,jdbcType=VARCHAR},
+      censorship_date = #{censorshipDate,jdbcType=LONGVARCHAR},
+      censorship_result = #{censorshipResult,jdbcType=LONGVARCHAR}
+    where censorship_id = #{censorshipId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.guo.entity.BlogCensorship" >
+    update blog_censorship
+    set blog_id = #{blogId,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=VARCHAR},
+      bloguser_id = #{bloguserId,jdbcType=VARCHAR}
+    where censorship_id = #{censorshipId,jdbcType=VARCHAR}
+  </update>
+</mapper>

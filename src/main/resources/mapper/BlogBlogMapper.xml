@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.guo.mapper.BlogBlogMapper" >
+  <resultMap id="BaseResultMap" type="com.guo.entity.BlogBlog" >
+    <id column="blog_id" property="blogId" jdbcType="VARCHAR" />
+    <result column="bloguser_id" property="bloguserId" jdbcType="VARCHAR" />
+    <result column="blogstate" property="blogstate" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.guo.entity.BlogBlogWithBLOBs" extends="BaseResultMap" >
+    <result column="blog_date" property="blogDate" jdbcType="LONGVARCHAR" />
+    <result column="blog_content" property="blogContent" jdbcType="LONGVARCHAR" />
+    <result column="blogtype" property="blogtype" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    blog_id, bloguser_id, blogstate
+  </sql>
+  <sql id="Blob_Column_List" >
+    blog_date, blog_content, blogtype
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.guo.entity.BlogBlogExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from blog_blog
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.guo.entity.BlogBlogExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from blog_blog
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from blog_blog
+    where blog_id = #{blogId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from blog_blog
+    where blog_id = #{blogId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.guo.entity.BlogBlogExample" >
+    delete from blog_blog
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.guo.entity.BlogBlogWithBLOBs" >
+    insert into blog_blog (blog_id, bloguser_id, blogstate, 
+      blog_date, blog_content, blogtype
+      )
+    values (#{blogId,jdbcType=VARCHAR}, #{bloguserId,jdbcType=VARCHAR}, #{blogstate,jdbcType=VARCHAR}, 
+      #{blogDate,jdbcType=LONGVARCHAR}, #{blogContent,jdbcType=LONGVARCHAR}, #{blogtype,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.guo.entity.BlogBlogWithBLOBs" >
+    insert into blog_blog
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="blogId != null" >
+        blog_id,
+      </if>
+      <if test="bloguserId != null" >
+        bloguser_id,
+      </if>
+      <if test="blogstate != null" >
+        blogstate,
+      </if>
+      <if test="blogDate != null" >
+        blog_date,
+      </if>
+      <if test="blogContent != null" >
+        blog_content,
+      </if>
+      <if test="blogtype != null" >
+        blogtype,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="blogId != null" >
+        #{blogId,jdbcType=VARCHAR},
+      </if>
+      <if test="bloguserId != null" >
+        #{bloguserId,jdbcType=VARCHAR},
+      </if>
+      <if test="blogstate != null" >
+        #{blogstate,jdbcType=VARCHAR},
+      </if>
+      <if test="blogDate != null" >
+        #{blogDate,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="blogContent != null" >
+        #{blogContent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="blogtype != null" >
+        #{blogtype,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.guo.entity.BlogBlogExample" resultType="java.lang.Integer" >
+    select count(*) from blog_blog
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update blog_blog
+    <set >
+      <if test="record.blogId != null" >
+        blog_id = #{record.blogId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bloguserId != null" >
+        bloguser_id = #{record.bloguserId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.blogstate != null" >
+        blogstate = #{record.blogstate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.blogDate != null" >
+        blog_date = #{record.blogDate,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.blogContent != null" >
+        blog_content = #{record.blogContent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.blogtype != null" >
+        blogtype = #{record.blogtype,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update blog_blog
+    set blog_id = #{record.blogId,jdbcType=VARCHAR},
+      bloguser_id = #{record.bloguserId,jdbcType=VARCHAR},
+      blogstate = #{record.blogstate,jdbcType=VARCHAR},
+      blog_date = #{record.blogDate,jdbcType=LONGVARCHAR},
+      blog_content = #{record.blogContent,jdbcType=LONGVARCHAR},
+      blogtype = #{record.blogtype,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update blog_blog
+    set blog_id = #{record.blogId,jdbcType=VARCHAR},
+      bloguser_id = #{record.bloguserId,jdbcType=VARCHAR},
+      blogstate = #{record.blogstate,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.guo.entity.BlogBlogWithBLOBs" >
+    update blog_blog
+    <set >
+      <if test="bloguserId != null" >
+        bloguser_id = #{bloguserId,jdbcType=VARCHAR},
+      </if>
+      <if test="blogstate != null" >
+        blogstate = #{blogstate,jdbcType=VARCHAR},
+      </if>
+      <if test="blogDate != null" >
+        blog_date = #{blogDate,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="blogContent != null" >
+        blog_content = #{blogContent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="blogtype != null" >
+        blogtype = #{blogtype,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where blog_id = #{blogId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.guo.entity.BlogBlogWithBLOBs" >
+    update blog_blog
+    set bloguser_id = #{bloguserId,jdbcType=VARCHAR},
+      blogstate = #{blogstate,jdbcType=VARCHAR},
+      blog_date = #{blogDate,jdbcType=LONGVARCHAR},
+      blog_content = #{blogContent,jdbcType=LONGVARCHAR},
+      blogtype = #{blogtype,jdbcType=LONGVARCHAR}
+    where blog_id = #{blogId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.guo.entity.BlogBlog" >
+    update blog_blog
+    set bloguser_id = #{bloguserId,jdbcType=VARCHAR},
+      blogstate = #{blogstate,jdbcType=VARCHAR}
+    where blog_id = #{blogId,jdbcType=VARCHAR}
+  </update>
+</mapper>
